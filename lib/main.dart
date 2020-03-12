@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
 
-QuizBrain quizBrain = QuizBrain();
+QuizBrain _quizBrain = QuizBrain();
 void main() => runApp(Quizzler());
 
 class Quizzler extends StatelessWidget {
@@ -28,7 +28,6 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scoreKeeper = [];
-  int questionNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.questionBank[questionNumber].questionText,
+                _quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -67,15 +66,14 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 // The user picked true
-                bool correctAnswer =
-                    quizBrain.questionBank[questionNumber].questionAnswer;
+                bool correctAnswer = _quizBrain.getCorrectAnswer();
                 if (correctAnswer == true) {
                   print('User got it right');
                 } else {
                   print('User got it wrong');
                 }
                 setState(() {
-                  questionNumber++;
+                  _quizBrain.nextQuestion();
                 });
               },
             ),
@@ -95,8 +93,14 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
+                bool correctAnswer = _quizBrain.getCorrectAnswer();
+                if (correctAnswer == true) {
+                  print('User got it right');
+                } else {
+                  print('User got it wrong');
+                }
                 setState(() {
-                  questionNumber++;
+                  _quizBrain.nextQuestion();
                 });
               },
             ),
